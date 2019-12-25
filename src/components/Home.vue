@@ -23,6 +23,7 @@
           :collapse="isCollapse"
           :collapse-transition="false"
           router
+          :default-active="activePath"
         >
           <!--unique-opened是否只有一个菜单可以展开，默认值是false，写了unique-opened就是true-->
 
@@ -44,6 +45,7 @@
               :index="'/' + subItem.path"
               v-for="subItem in item.children"
               :key="subItem.id"
+              @click="saveNavState('/' + subItem.path)"
             >
               <template slot="title">
                 <!--图标 -->
@@ -78,11 +80,14 @@ export default {
         '145': 'iconfont icon-baobiao'
       },
       // 是否折叠
-      isCollapse: false
+      isCollapse: false,
+      // 被激活的链接地址
+      activePath: ''
     }
   },
   created() {
     this.getMenuList()
+    // this.activePath = window.sessionStorage.getItem('activePath')
   },
   methods: {
     // 退出登录
@@ -101,6 +106,11 @@ export default {
     // 点击按钮，切换菜单的折叠与展开
     toggleCollapse() {
       this.isCollapse = !this.isCollapse
+    },
+    // 二级菜单链接的激活状态
+    saveNavState(activePath) {
+      // window.sessionStorage.setItem('acctivePath', activePath)
+      this.activePath = activePath
     }
   }
 }
