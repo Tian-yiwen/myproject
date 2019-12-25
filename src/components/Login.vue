@@ -48,8 +48,8 @@ export default {
     return {
       // 这是登录表单的数据绑定对象
       loginForm: {
-        username: '123',
-        password: '12345678'
+        username: 'admin',
+        password: '123456'
       },
       // 这是表单的验证规则对象
       loginFormRules: {
@@ -59,44 +59,34 @@ export default {
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' }, // 当输入框失去焦点时验证
-          { min: 8, max: 16, message: '长度在 8 到 16 个字符', trigger: 'blur' }
+          { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }
         ]
       }
     }
   },
   methods: {
-    // 点击登录前先校验
-    login() {
-      // this.$refs.loginFormRef.validate(async valid => {
-      //   // console.log(valid)
-      //   if (!valid) return
-      //   const { data: res } = await this.$http.post('login', this.loginForm)
-      //   if (res.meta.status !== 200) return console.log('登陆失败！')
-      //   console.log('登陆成功！')
-      // })
-      // }
-      // 虚拟校验
-      this.$refs.loginFormRef.validate(valid => {
-        var username = this.loginForm.username
-        var password = this.loginForm.password
-        // eslint-disable-next-line eqeqeq
-        if (username == 123 && password == 12345678) {
-          // alert('登陆成功！')
-          this.$message.success('登陆成功！')
-          // 登陆成功之后的token
-          // eslint-disable-next-line no-undef
-          // window.sessionStorage.setItem('token', res.data.token)
-          // 通过编程式导航跳转到后台主页，路由地址是/home
-          this.$router.push('/home')
-        } else {
-          // alert('登陆失败！')
-          this.$message.error('登陆失败！')
-        }
-      })
-    },
     // 点击重置按钮事件
     resetLoginForm() {
       this.$refs.loginFormRef.resetFields()
+    },
+    // 登录请求
+    login() {
+      this.$refs.loginFormRef.validate(async valid => {
+        // console.log(valid)
+        if (!valid) return
+        // const result = await this.$http.post('login', this.loginForm)
+        // 如果打印出来的是promise对象，就用await和async
+        // console.log(result)
+        // result的结果是data对象，对data对象解构赋值
+        const { data: res } = await this.$http.post('login', this.loginForm)
+        // console.log(res)
+        if (res.meta.status !== 200) return this.$message.error('用户名或密码错误！')
+        this.$message.success('登陆成功！')
+        // 1.将登陆成功之后的token保存到客户端sessionStorage中
+        window.sessionStorage.setItem('token', res.data.token)
+        // 2.编程式导航跳转到后台主页
+        this.$router.push('/home')
+      })
     }
   }
 }
