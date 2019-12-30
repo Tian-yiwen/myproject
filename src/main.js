@@ -9,7 +9,7 @@ import './assets/css/global.css'
 // 配置axios
 import axios from 'axios'
 // 为axios设置请求的根路径
-axios.defaults.baseURL = 'http://49.235.242.56:8888/api/private/v1/'
+axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
 // 挂载一个请求拦截器
 axios.interceptors.request.use(config => {
   console.log(config)
