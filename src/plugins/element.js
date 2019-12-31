@@ -26,7 +26,8 @@ import {
   Pagination,
   Dialog,
   MessageBox,
-  Tag
+  Tag,
+  Tree
 } from 'element-ui'
 
 Vue.use(Button)
@@ -52,6 +53,7 @@ Vue.use(Tooltip)
 Vue.use(Pagination)
 Vue.use(Dialog)
 Vue.use(Tag)
+Vue.use(Tree)
 // message必须全局挂载在Vue的原型上
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

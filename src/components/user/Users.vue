@@ -252,7 +252,6 @@ export default {
       }
       this.userlist = res.data.users
       this.total = res.data.total
-      console.log(res)
     },
     // 监听pagesize改变的事件
     handleSizeChange(newSize) {
@@ -290,8 +289,6 @@ export default {
     // 点击按钮添加新用户
     addUser() {
       this.$refs.addFormRef.validate(async valid => {
-        // console.log(valid)
-        // eslint-disable-next-line no-useless-return
         if (!valid) return
         // 发起添加用户的请求
         const { data: res } = await this.$http.post('users', this.addForm)
