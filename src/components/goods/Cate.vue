@@ -89,10 +89,10 @@
         <el-form-item label="父级分类">
           <el-cascader
             v-model="selectedKeys"
-            expandTrigger="hover"
             :options="parentCateList"
             :props="cascaderProps"
             @change="parentCateChanged"
+            clearable
           ></el-cascader>
         </el-form-item>
       </el-form>
@@ -171,7 +171,9 @@ export default {
       cascaderProps: {
         value: 'cat_id',
         label: 'cat_name',
-        children: 'children'
+        children: 'children',
+        expandTrigger: 'hover',
+        checkStrictly: true
       }
     }
   },
@@ -219,6 +221,7 @@ export default {
       const { data: res } = await this.$http.get('categories', {
         params: { type: 2 }
       })
+      console.log(res.data)
       if (res.meta.status !== 200) {
         return this.$message.error('获取父级列表数据失败')
       } else {
@@ -228,8 +231,25 @@ export default {
     // 选择项发生变化时触发的事件
     parentCateChanged() {
       console.log(this.selectedKeys)
+      // 如果selectedkeys数组中的length大于0，证明选中的父级分类，反之，证明没有选中
+      if (this.selectedKeys.length > 0) {
+        // 父级分类的id
+        // eslint-disable-next-line standard/computed-property-even-spacing
+        this.addCateForm.cat_pid = this.selectedKeys[
+          this.selectedKeys.lenghth - 1
+        ]
+        // 为当前分类等级赋值
+        this.addCateForm.cat_level = this.selectedKeys.length
+      } else {
+        // 父级分类的id
+        this.addCateForm.cat_pid = 0
+        // 为当前分类的等级赋值
+        this.addCateForm.cat_level = 0
+      }
     },
-    addCate() {}
+    addCate() {
+      console.log(this.addCateForm)
+    }
   }
 }
 </script>
@@ -237,4 +257,8 @@ export default {
 .treeTable {
   margin-top: 15px;
 }
+.el-cascader{
+  width: 100%;
+}
+
 </style>
