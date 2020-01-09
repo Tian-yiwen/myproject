@@ -25,7 +25,7 @@
           </el-input>
         </el-col>
         <el-col :span="4">
-          <el-button type="primary">添加商品</el-button>
+          <el-button type="primary" @click="goAddpage">添加商品</el-button>
         </el-col>
       </el-row>
       <!-- 商品列表区域 -->
@@ -49,7 +49,7 @@
         </el-table-column>
         <el-table-column label="操作" width="130px">
           <!-- 修改删除操作的插槽 -->
-          <template>
+          <template slot-scope="scope">
             <!-- 修改 -->
             <el-button
               type="primary"
@@ -61,6 +61,7 @@
               type="danger"
               icon="el-icon-delete"
               size="mini"
+              @click="removeGoodsById(scope.row.goods_id)"
             ></el-button>
           </template>
         </el-table-column>
@@ -71,7 +72,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryInfo.pagenum"
-        :page-sizes="[1, 2, 4, 8]"
+        :page-sizes="[1, 4, 8, 10]"
         :page-size="queryInfo.pagesize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -109,12 +110,50 @@ export default {
       } else {
         this.goodslist = res.data.goods
         this.total = res.data.total
-        this.queryInfo.pagenum = res.data.pagenum
+        // this.queryInfo.pagenum = res.data.pagenum
       }
     },
-    handleSizeChange() {},
-    handleCurrentChange() {}
+    // 分页效果
+    handleSizeChange(newSize) {
+      console.log(newSize)
+      this.queryInfo.pagesize = newSize
+      this.getGoodsList()
+    },
+    handleCurrentChange(newPage) {
+      console.log(newPage)
+      this.queryInfo.pagenum = newPage
+      this.getGoodsList()
+    },
+    async removeGoodsById(id) {
+      // 弹框询问用户是否删除数据
+      await this.$confirm('此操作将永久删除该商品信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          const { data: res } = await this.$http.delete('goods/' + id)
+          if (res.meta.status !== 200) {
+            return this.$message.error('删除商品信息失败！')
+          }
+          this.$message({
+            type: 'success',
+            message: '删除商品信息成功!'
+          })
+          this.getGoodsList()
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
+    goAddpage() {
+      this.$router.push('/goods/add')
+    }
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>

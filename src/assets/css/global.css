@@ -23,3 +23,6 @@ body,
 .el-cascader-panel {
   max-height: 300px;
 }
+.el-step__title{
+  font-size: 14px;
+}
