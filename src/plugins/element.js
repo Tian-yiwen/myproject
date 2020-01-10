@@ -35,9 +35,14 @@ import {
   Tabs,
   TabPane,
   Step,
-  Steps
+  Steps,
+  Upload,
+  Checkbox,
+  CheckboxGroup
 } from 'element-ui'
 
+Vue.use(Checkbox)
+Vue.use(CheckboxGroup)
 Vue.use(Button)
 Vue.use(Form)
 Vue.use(FormItem)
@@ -70,6 +75,7 @@ Vue.use(Tabs)
 Vue.use(TabPane)
 Vue.use(Step)
 Vue.use(Steps)
+Vue.use(Upload)
 // message必须全局挂载在Vue的原型上
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
