@@ -38,7 +38,9 @@ import {
   Steps,
   Upload,
   Checkbox,
-  CheckboxGroup
+  CheckboxGroup,
+  Timeline,
+  TimelineItem
 } from 'element-ui'
 
 Vue.use(Checkbox)
@@ -76,6 +78,8 @@ Vue.use(TabPane)
 Vue.use(Step)
 Vue.use(Steps)
 Vue.use(Upload)
+Vue.use(Timeline)
+Vue.use(TimelineItem)
 // message必须全局挂载在Vue的原型上
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
